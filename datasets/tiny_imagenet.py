@@ -55,13 +55,15 @@ class TinyImageNet:
         self.tr_train = transforms.Compose(self.tr_train)
         self.tr_test = transforms.Compose(self.tr_test)
 
-        self.train_path = os.path.join(args.data_dir, 'train/')
-        self.val_path = os.path.join(args.data_dir, 'val/')
-        self.test_path = os.path.join(args.data_dir, 'test/')
+        self.data_dir = os.path.join(args.data_dir, 'tiny-imagenet-200/')
+
+        self.train_path = os.path.join(self.data_dir, 'train/')
+        self.val_path = os.path.join(self.data_dir, 'val/')
+        self.test_path = os.path.join(self.data_dir, 'test/')
 
         if os.path.exists(os.path.join(self.val_path, "images")):
             if os.path.exists(self.test_path):
-                os.rename(self.test_path, os.path.join(args.data_dir, "test_original"))
+                os.rename(self.test_path, os.path.join(self.data_dir, "test_original"))
                 os.mkdir(self.test_path)
             val_dict = {}
             val_anno_path = os.path.join(self.val_path, "val_annotations.txt")
@@ -70,7 +72,7 @@ class TinyImageNet:
                     split_line = line.split('\t')
                     val_dict[split_line[0]] = split_line[1]
 
-            paths = glob.glob(os.path.join(args.data_dir, 'val/images/*'))
+            paths = glob.glob(os.path.join(self.data_dir, 'val/images/*'))
             for path in paths:
                 file = path.split('/')[-1]
                 folder = val_dict[file]
